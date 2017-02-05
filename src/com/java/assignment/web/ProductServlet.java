@@ -48,9 +48,9 @@ public class ProductServlet extends HttpServlet {
 		// response.getWriter().append("Served at:
 		// ").append(request.getContextPath());
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Product.html");
-		PrintWriter out = response.getWriter();
-		out.println("Invalid user name or password");
-		rd.include(request, response);
+		// PrintWriter out = response.getWriter();
+		// out.println("Invalid user name or password");
+		 rd.include(request, response);
 
 	}
 
@@ -61,24 +61,46 @@ public class ProductServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-		Record record = new Record();
-		try {
-			record.setProductId(Long.valueOf(request.getParameter("productID")));
+		 //doGet(request, response);
+		System.out.println(request.getParameter("view"));
+		
+		if(request.getParameter("add")!=null)
+		{
+			String status = null;
+			Record record = new Record();
+			try {
+				record.setProductId(Long.valueOf(request.getParameter("productID")));
 
-			record.setProductName(request.getParameter("ProductName"));
+				record.setProductName(request.getParameter("ProductName"));
 
-			record.setProductPrice(Double.valueOf(request.getParameter("Price")));
+				record.setProductPrice(Double.valueOf(request.getParameter("Price")));
+
+				record.setProductQty(Integer.valueOf(request.getParameter("Quantity")));
+
+				record.setProductCategory(request.getParameter("Category"));
+				status = DabaBaseManuplation.addRecord(record);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (status!= null) {
+				PrintWriter out = response.getWriter();
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Product.html");
+				rd.include(request, response);
+				out.println(status +" added into DB!");
+				// rd.include(request, response);
+
+			}
 			
-			record.setProductQty(Integer.valueOf(request.getParameter("Quantity")));
+		}
+		else if(request.getParameter("view")!=null)
+		{
 			
-			record.setProductCategory(request.getParameter("Category"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("view!");
+			
 		}
 		
-		DabaBaseManuplation.addRecord(record);
 
 	}
 

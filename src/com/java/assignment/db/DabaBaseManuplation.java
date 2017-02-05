@@ -17,18 +17,19 @@ import com.java.assignment.domain.Record;
 
 public class DabaBaseManuplation {
 	
-	public static void addRecord(Record record)
+	public static String addRecord(Record record)
 	{
 		try {
 			// create a mysql database connection
 			// String myDriver = "org.gjt.mm.mysql.Driver";
 			final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-			String myUrl = "jdbc:mysql://localhost:3306/java";
+			String myUrl = "jdbc:mysql://localhost:3306/test";
 			Class.forName("com.mysql.jdbc.Driver");
 
 			java.sql.Connection conn = DriverManager.getConnection(myUrl, "root", "admin");
 
 			// the mysql insert statement
+			System.out.println("connection built.");
 			String query = " insert into product (PRODUCTID, PRODUCTNAME,QUANTITY,PRICE,CATEGORY)"
 					+ " values (?, ?, ?, ?, ?)";
 
@@ -44,9 +45,12 @@ public class DabaBaseManuplation {
 			preparedStmt.execute();
 
 			conn.close();
+			
+			return record.getProductId().toString();
 		} catch (Exception e) {
 			System.err.println("Got an exception!");
 			System.err.println(e.getMessage());
+			return null;
 		}
 		
 	}
