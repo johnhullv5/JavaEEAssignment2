@@ -32,19 +32,29 @@ public class DabaBaseManuplation {
 
 			// the mysql insert statement
 			System.out.println("connection built.");
+			Record record = null;
 			String selectSQL = "SELECT * WHERE USER_ID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			preparedStatement.setString(1, productID);
 			ResultSet rs = preparedStatement.executeQuery(selectSQL );
 			while (rs.next()) {
-				String userid = rs.getString("USER_ID");
-				String username = rs.getString("USERNAME");
+				record = new Record();
+				record.setProductId(Integer.valueOf(productID));
+				record.setProductName( rs.getString("ProductName"));
+				
+			    record.setProductPrice(Double.valueOf(rs.getString("Price")));
+			    record.setProductQty(Integer.valueOf(rs.getString("Quantity")));
+			    
+			    record.setProductCategory(rs.getString("ProductName"));
+			    
+//				String userid = rs.getString("USER_ID");
+//				String username = rs.getString("USERNAME");
 			}
 
 
 			conn.close();
 			
-			return record.getProductId().toString();
+			return record;
 		} catch (Exception e) {
 			System.err.println("Got an exception!");
 			System.err.println(e.getMessage());
