@@ -101,6 +101,11 @@ public class ProductServlet extends HttpServlet {
 			
 		}
 		
+		else if(request.getParameter("edit")!=null)
+		{
+			
+		}
+		
 
 	}
 
